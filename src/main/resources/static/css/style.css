@@ -1,0 +1,227 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 20px;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+#expense-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.expense-card {
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 15px 20px;
+  width: 250px;
+  transition: box-shadow 0.3s ease;
+}
+
+.expense-card:hover {
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.expense-category {
+  font-weight: bold;
+  color: #2980b9;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.expense-amount {
+  font-size: 24px;
+  color: #27ae60;
+  margin-bottom: 5px;
+}
+
+.expense-description {
+  font-style: italic;
+  color: #7f8c8d;
+  margin-bottom: 8px;
+}
+
+.expense-date {
+  font-size: 14px;
+  color: #95a5a6;
+}
+
+/* Form styles */
+form#expense-form {
+  max-width: 500px;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+form#expense-form input,
+form#expense-form button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+form#expense-form input {
+  flex: 1 1 45%;
+}
+
+form#expense-form button {
+  flex: 1 1 100%;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+form#expense-form button:hover {
+  background-color: #3498db;
+}
+
+
+
+.expense-card {
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 15px 20px;
+  width: 250px;
+  transition: box-shadow 0.3s ease;
+  position: relative;
+}
+
+.expense-card:hover {
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+
+
+
+.edit-btn {
+  background-color: #2980b9;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 8px;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn:hover {
+  background-color: #3498db;
+}
+
+.edit-mode input {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+
+
+
+.save-btn {
+  background-color: #27ae60;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.save-btn:hover {
+  background-color: #2ecc71;
+}
+
+.cancel-btn {
+  background-color: #95a5a6;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #7f8c8d;
+}
+
+
+
+
+.edit-btn, .delete-btn {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Specific colors */
+.edit-btn {
+  background-color: #2980b9;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #3498db;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+
+
+
