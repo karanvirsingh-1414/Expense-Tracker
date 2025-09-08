@@ -7,7 +7,6 @@
 </head>
 <body>
   <h1>Expense Tracker</h1>
-
   <form id="expense-form">
     <input type="number" id="amount" placeholder="Amount" required />
     <input type="text" id="category" placeholder="Category" required />
@@ -16,8 +15,14 @@
     <button type="submit">Add Expense</button>
   </form>
 
-  <div id="expense-list"></div>
+  <div id="summary-box" style="display:none;">
+  <p>Monthly Salary: ₹<span id="salary-amount">50000</span></p>
+  <p>Total Expenses: ₹<span id="total-expenses">0</span></p>
+  <p>Remaining Money: ₹<span id="remaining-money">0</span></p>
+</div>
 
+
+  <div id="main-view"></div>
   <script src="js/scripts.js"></script>
 </body>
 </html>

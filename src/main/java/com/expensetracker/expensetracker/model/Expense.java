@@ -1,13 +1,10 @@
 package com.expensetracker.expensetracker.model;
 
 import lombok.Data;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Data  // Lombok automatically getters/setters generate karega
+@Data
 @Entity
 public class Expense {
     @Id
@@ -18,4 +15,8 @@ public class Expense {
     private String category;
     private String description;
     private LocalDate date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")  // DB me is column se user link hoga
+    private User user;
 }

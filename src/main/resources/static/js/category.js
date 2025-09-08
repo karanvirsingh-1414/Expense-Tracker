@@ -1,19 +1,19 @@
 let allExpenses = [];
 
-// Fetch all expenses and show category folders (main view)
+// Fetch expenses from backend and show categories
 function fetchExpensesAndShowCategories() {
   fetch('/api/expenses')
     .then(res => res.json())
     .then(data => {
       allExpenses = data;
       showCategoryFolders();
-      // Show form and hide summary box on category view
+      // Show form when categories shown
       document.getElementById('expense-form').style.display = 'flex';
       document.getElementById('summary-box').style.display = 'none';
     });
 }
 
-// Show all category folders as clickable divs
+// Show folders of categories
 function showCategoryFolders() {
   const mainView = document.getElementById('main-view');
   mainView.innerHTML = '';
@@ -33,12 +33,12 @@ function showCategoryFolders() {
   mainView.appendChild(folderContainer);
 }
 
-// Show expenses for a specific category with summary and back button
+// Show all expenses of a category with summary and back button
 function showCategoryExpenses(category) {
   const mainView = document.getElementById('main-view');
   mainView.innerHTML = '';
 
-  // Hide form and show summary box
+  // Hide add form, show summary box
   document.getElementById('expense-form').style.display = 'none';
   const summaryBox = document.getElementById('summary-box');
   summaryBox.style.display = 'block';
@@ -58,12 +58,12 @@ function showCategoryExpenses(category) {
   mainView.appendChild(backBtn);
   mainView.appendChild(heading);
 
-  // Expenses filter by category
   const expenses = allExpenses.filter(e => e.category === category);
 
-  // Calculate summary values
+  // Calculate totals
   const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
   const salary = parseFloat(document.getElementById('salary-amount').textContent);
+
   document.getElementById('total-expenses').textContent = totalExpenses.toFixed(2);
   document.getElementById('remaining-money').textContent = (salary - totalExpenses).toFixed(2);
 
@@ -106,7 +106,7 @@ function showCategoryExpenses(category) {
   mainView.appendChild(list);
 }
 
-// Enable edit mode for a specific expense card
+// Edit mode logic on single expense card
 function enableEditMode(card, expense, category) {
   card.classList.add('edit-mode');
   card.innerHTML = `
@@ -144,7 +144,7 @@ function enableEditMode(card, expense, category) {
   });
 }
 
-// Add new expense handler
+// Add expense form submit handler
 document.getElementById('expense-form').addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -168,5 +168,5 @@ document.getElementById('expense-form').addEventListener('submit', function (e) 
     .catch((err) => console.error('Error:', err));
 });
 
-// Initial page load
+// Initial load
 window.onload = fetchExpensesAndShowCategories;
