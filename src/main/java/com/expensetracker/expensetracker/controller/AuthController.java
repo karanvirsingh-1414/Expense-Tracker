@@ -15,20 +15,20 @@ public class AuthController {
   @Autowired
   private UserRepository userRepository;
 
-  // Simple login endpoint (username/password check, no security config for demo)
+  // Login endpoint
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody User loginRequest) {
     Optional<User> userOpt = userRepository.findByUsername(loginRequest.getUsername());
     if(userOpt.isPresent()) {
       User user = userOpt.get();
       if(user.getPassword().equals(loginRequest.getPassword())) {
-        return ResponseEntity.ok(user); // return user details after successful login
+        return ResponseEntity.ok(user);
       }
     }
     return ResponseEntity.status(401).body("Invalid username or password");
   }
 
-  // Simple registration API
+  // Registration API
   @PostMapping("/register")
   public ResponseEntity<?> register(@RequestBody User newUser) {
     if(userRepository.findByUsername(newUser.getUsername()).isPresent()) {
@@ -38,7 +38,7 @@ public class AuthController {
     return ResponseEntity.ok(savedUser);
   }
 
-  // API to update profile salary and name
+  // Update profile (name & salary)
   @PostMapping("/profile/{id}")
   public ResponseEntity<?> updateProfile(@PathVariable Long id, @RequestBody User profileRequest) {
     Optional<User> userOpt = userRepository.findById(id);
@@ -46,8 +46,12 @@ public class AuthController {
       return ResponseEntity.notFound().build();
     }
     User user = userOpt.get();
-    user.setName(profileRequest.getName());
-    user.setSalary(profileRequest.getSalary());
+    if (profileRequest.getName() != null && !profileRequest.getName().isEmpty()) {
+      user.setName(profileRequest.getName());
+    }
+    if (profileRequest.getSalary() != null) {
+      user.setSalary(profileRequest.getSalary());
+    }
     userRepository.save(user);
     return ResponseEntity.ok(user);
   }

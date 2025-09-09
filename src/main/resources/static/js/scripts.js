@@ -2,14 +2,19 @@ let allExpenses = [];
 
 // Fetch all expenses and show category folders (main view)
 function fetchExpensesAndShowCategories() {
-  fetch('/api/expenses')
+  fetch(`/api/expenses?username=${JSON.parse(sessionStorage.getItem('user')).username}`)
     .then(res => res.json())
     .then(data => {
+      console.log('Fetched expenses:', data);
       allExpenses = data;
       showCategoryFolders();
       // Show form and hide summary box on category view
       document.getElementById('expense-form').style.display = 'flex';
       document.getElementById('summary-box').style.display = 'none';
+    })
+    .catch(err => {
+      console.error('Error fetching expenses:', err);
+      alert('Failed to load expenses.');
     });
 }
 
@@ -17,6 +22,10 @@ function fetchExpensesAndShowCategories() {
 function showCategoryFolders() {
   const mainView = document.getElementById('main-view');
   mainView.innerHTML = '';
+  if (allExpenses.length === 0) {
+    mainView.innerHTML = '<p>No expenses found. Add your first one!</p>';
+    return;
+  }
   const categories = [...new Set(allExpenses.map(e => e.category))];
 
   const folderContainer = document.createElement('div');
@@ -50,6 +59,7 @@ function showCategoryExpenses(category) {
     summaryBox.style.display = 'none';
     document.getElementById('expense-form').style.display = 'flex';
     fetchExpensesAndShowCategories();
+    fetchExpenseSummary();
   };
 
   const heading = document.createElement('h2');
@@ -89,10 +99,12 @@ function showCategoryExpenses(category) {
             if (res.ok) {
               alert('Deleted');
               fetchExpensesAndShowCategories();
+              fetchExpenseSummary();
             } else {
               alert('Delete failed!');
             }
-          });
+          })
+          .catch(() => alert('Error deleting expense.'));
       }
     });
 
@@ -123,6 +135,7 @@ function enableEditMode(card, expense, category) {
       category: category,
       description: card.querySelector('#edit-description').value,
       date: card.querySelector('#edit-date').value,
+      user: JSON.parse(sessionStorage.getItem('user'))
     };
     fetch(`/api/expenses/${expense.id}`, {
       method: 'PUT',
@@ -133,10 +146,12 @@ function enableEditMode(card, expense, category) {
         if (res.ok) {
           alert('Updated!');
           fetchExpensesAndShowCategories();
+          fetchExpenseSummary();
         } else {
           alert('Update failed!');
         }
-      });
+      })
+      .catch(() => alert('Error updating expense.'));
   });
 
   card.querySelector('.cancel-btn').addEventListener('click', () => {
@@ -148,11 +163,14 @@ function enableEditMode(card, expense, category) {
 document.getElementById('expense-form').addEventListener('submit', function (e) {
   e.preventDefault();
 
+  const user = JSON.parse(sessionStorage.getItem('user'));
+
   const expense = {
     amount: parseFloat(document.getElementById('amount').value),
     category: document.getElementById('category').value.trim(),
     description: document.getElementById('description').value.trim(),
     date: document.getElementById('date').value,
+    user: user  // Link expense to logged-in user
   };
 
   fetch('/api/expenses', {
@@ -160,13 +178,40 @@ document.getElementById('expense-form').addEventListener('submit', function (e) 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(expense),
   })
-    .then((res) => res.json())
-    .then(() => {
-      this.reset();
-      fetchExpensesAndShowCategories();
+    .then(res => {
+      if (res.ok) {
+        this.reset();
+        fetchExpensesAndShowCategories();
+        fetchExpenseSummary();
+      } else {
+        alert('Failed to add expense.');
+      }
     })
-    .catch((err) => console.error('Error:', err));
+    .catch(() => alert('Error while adding expense.'));
 });
 
+// Fetch summary info from backend
+function fetchExpenseSummary() {
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  fetch(`/api/expenses/summary?username=${user.username}`)
+    .then(res => {
+      if (!res.ok) throw new Error('Summary fetch failed');
+      return res.json();
+    })
+    .then(data => {
+      document.getElementById('salary-amount').textContent = data.salary.toFixed(2);
+      document.getElementById('total-expenses').textContent = data.totalExpense.toFixed(2);
+      document.getElementById('remaining-money').textContent = data.remainingMoney.toFixed(2);
+      document.getElementById('summary-box').style.display = 'block';
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error loading summary');
+    });
+}
+
 // Initial page load
-window.onload = fetchExpensesAndShowCategories;
+window.onload = function () {
+  fetchExpenseSummary();
+  fetchExpensesAndShowCategories();
+};

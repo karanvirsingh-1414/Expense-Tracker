@@ -1,69 +1,86 @@
 package com.expensetracker.expensetracker.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.expensetracker.expensetracker.service.ExpenseService;
+
 import com.expensetracker.expensetracker.model.Expense;
+import com.expensetracker.expensetracker.model.User;
+import com.expensetracker.expensetracker.repository.UserRepository;
+import com.expensetracker.expensetracker.service.ExpenseService;
+
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 import java.time.LocalDate;
-
-
-
 
 @RestController
 @RequestMapping("/api/expenses")
 public class ExpenseController {
 
-    @Autowired
-    private ExpenseService expenseService;
+  @Autowired
+  private ExpenseService expenseService;
 
-    // 1. Create Expense
-    @PostMapping
-    public Expense addExpense(@RequestBody Expense expense) {
-        return expenseService.addExpense(expense);
+  @Autowired
+  private UserRepository userRepository;
+
+  @PostMapping
+  public ResponseEntity<?> addExpense(@RequestBody Expense expense) {
+    if(expense.getUser() == null || expense.getUser().getId() == null) {
+      return ResponseEntity.badRequest().body("User information is required");
     }
+    Expense saved = expenseService.addExpense(expense);
+    return ResponseEntity.ok(saved);
+  }
 
-    // 2. Get All Expenses
-    @GetMapping
-    public List<Expense> getAllExpenses() {
-        return expenseService.getAllExpenses();
-    }
+  @GetMapping
+  public List<Expense> getAllExpenses(@RequestParam("username") String username) {
+    User user = userRepository.findByUsername(username).orElse(null);
+    if(user == null) return Collections.emptyList();
+    return expenseService.getAllExpensesByUser(user);
+  }
 
-    // 3. Get Expense by ID
-    @GetMapping("/{id}")
-    public Expense getExpenseById(@PathVariable Long id) {
-        return expenseService.getExpenseById(id);
-    }
+  @GetMapping("/{id}")
+  public Expense getExpenseById(@PathVariable Long id) {
+    return expenseService.getExpenseById(id);
+  }
 
-    // 4. Update Expense
-   @PutMapping("/{id}")
-public Expense updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
+  @PutMapping("/{id}")
+  public Expense updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
     return expenseService.updateExpense(id, expense);
-}
+  }
 
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteExpense(@PathVariable Long id) {
+    expenseService.deleteExpenseById(id);
+    return ResponseEntity.ok().build();
+  }
 
-    // 5. Delete Expense by ID
-    @DeleteMapping("/{id}")
-    public void deleteExpense(@PathVariable Long id) {
-        expenseService.deleteExpense(id);
+  @GetMapping("/category/{category}")
+  public List<Expense> getExpensesByCategory(@PathVariable String category) {
+    return expenseService.getExpensesByCategory(category);
+  }
+
+  @GetMapping("/date")
+  public List<Expense> getExpensesByDateRange(@RequestParam("start") String start,
+                                             @RequestParam("end") String end) {
+    return expenseService.getExpensesByDateRange(LocalDate.parse(start), LocalDate.parse(end));
+  }
+
+  @GetMapping("/summary")
+  public ResponseEntity<?> getUserExpenseSummary(@RequestParam("username") String username) {
+    User user = userRepository.findByUsername(username).orElse(null);
+    if (user == null) {
+      return ResponseEntity.status(404).body("User not found");
     }
+    List<Expense> expenses = expenseService.getAllExpensesByUser(user);
+    double totalExpense = expenses.stream().mapToDouble(Expense::getAmount).sum();
+    Map<String, Object> summary = new HashMap<>();
+    summary.put("salary", user.getSalary());
+    summary.put("totalExpense", totalExpense);
+    summary.put("remainingMoney", user.getSalary() - totalExpense);
 
-    // 6. Get Expenses by Category
-    @GetMapping("/category/{category}")
-    public List<Expense> getExpensesByCategory(@PathVariable String category) {
-        return expenseService.getExpensesByCategory(category);
-    }
-
-    // 7. Get Expenses by Date Range
-    @GetMapping("/date")
-    public List<Expense> getExpensesByDateRange(@RequestParam("start") String start,
-                                                @RequestParam("end") String end) {
-        return expenseService.getExpensesByDateRange(LocalDate.parse(start), LocalDate.parse(end));
-    }
-
-    // 8. Delete All Expenses (Optional)
-    @DeleteMapping
-    public void deleteAllExpenses() {
-        expenseService.deleteAllExpenses();
-    }
+    return ResponseEntity.ok(summary);
+  }
 }

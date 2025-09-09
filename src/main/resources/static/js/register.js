@@ -7,8 +7,8 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
     body: JSON.stringify({
       username: document.getElementById('username').value,
       password: document.getElementById('password').value,
-      name: document.getElementById('name').value,
-      salary: parseFloat(document.getElementById('salary').value)
+      name: document.getElementById('name').value
+      // salary is NOT sent here
     }),
   })
   .then(res => {

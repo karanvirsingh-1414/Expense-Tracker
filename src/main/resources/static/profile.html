@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><title>Profile Setup</title></head>
+<head>
+  <title>Profile Setup</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
 <body>
-  <h1>Setup Your Profile</h1>
+  <h1>Profile Setup</h1>
+  <div style="text-align:center;font-size:22px;margin-bottom:20px;">
+    Welcome, <span id="display-name"></span>
+  </div>
   <form id="profile-form">
-    <input id="name" placeholder="Your Name" required />
     <input id="salary" type="number" placeholder="Monthly Salary" required />
     <button type="submit">Save</button>
-    <link rel="stylesheet" href="css/style.css" />
   </form>
-
   <script src="js/profile.js"></script>
 </body>
 </html>

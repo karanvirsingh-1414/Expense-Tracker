@@ -1,56 +1,54 @@
 package com.expensetracker.expensetracker.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.expensetracker.expensetracker.repository.ExpenseRepository;
 import com.expensetracker.expensetracker.model.Expense;
-import java.util.List;
+import com.expensetracker.expensetracker.model.User;
+import com.expensetracker.expensetracker.repository.ExpenseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
-
-
+import java.util.List;
 
 @Service
 public class ExpenseService {
 
-    @Autowired
-    private ExpenseRepository expenseRepository;
+  @Autowired
+  private ExpenseRepository expenseRepository;
 
-    public Expense addExpense(Expense expense) {
-        return expenseRepository.save(expense);
-    }
+  public Expense addExpense(Expense expense) {
+    return expenseRepository.save(expense);
+  }
 
-    public List<Expense> getAllExpenses() {
-        return expenseRepository.findAll();
-    }
+  public List<Expense> getAllExpensesByUser(User user) {
+    return expenseRepository.findByUser(user);
+  }
 
-    public Expense getExpenseById(Long id) {
-        return expenseRepository.findById(id).orElse(null);
-    }
+  public Expense getExpenseById(Long id) {
+    return expenseRepository.findById(id).orElse(null);
+  }
 
-    public Expense updateExpense(Long id, Expense expense) {
-        return expenseRepository.findById(id)
-            .map(existingExpense -> {
-                existingExpense.setAmount(expense.getAmount());
-                existingExpense.setCategory(expense.getCategory());
-                existingExpense.setDescription(expense.getDescription());
-                existingExpense.setDate(expense.getDate());
-                return expenseRepository.save(existingExpense);
-            }).orElse(null);
-    }
+  public Expense updateExpense(Long id, Expense expenseDetails) {
+    Expense expense = expenseRepository.findById(id).orElse(null);
+    if(expense == null) return null;
 
-    public void deleteExpense(Long id) {
-        expenseRepository.deleteById(id);
-    }
+    expense.setAmount(expenseDetails.getAmount());
+    expense.setCategory(expenseDetails.getCategory());
+    expense.setDescription(expenseDetails.getDescription());
+    expense.setDate(expenseDetails.getDate());
+    expense.setUser(expenseDetails.getUser());
 
-    public List<Expense> getExpensesByCategory(String category) {
-        return expenseRepository.findByCategoryIgnoreCase(category);
-    }
+    return expenseRepository.save(expense);
+  }
 
-    public List<Expense> getExpensesByDateRange(LocalDate start, LocalDate end) {
-        return expenseRepository.findByDateBetween(start, end);
-    }
+  public void deleteExpenseById(Long id) {
+    expenseRepository.deleteById(id);
+  }
 
-    public void deleteAllExpenses() {
-        expenseRepository.deleteAll();
-    }
+  public List<Expense> getExpensesByCategory(String category) {
+    return expenseRepository.findByCategory(category);
+  }
+
+  public List<Expense> getExpensesByDateRange(LocalDate start, LocalDate end) {
+    return expenseRepository.findByDateBetween(start, end);
+  }
 }
