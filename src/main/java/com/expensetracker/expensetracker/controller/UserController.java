@@ -64,4 +64,19 @@ public class UserController {
     userRepository.deleteAll();
     return ResponseEntity.ok("All users and all expenses deleted successfully");
   }
+
+  // Register a new user
+  @PostMapping("/register")
+  public ResponseEntity<?> registerUser(@RequestBody User user) {
+    if (user.getUsername() == null || user.getUsername().isEmpty() ||
+        user.getPassword() == null || user.getPassword().isEmpty() ||
+        user.getSalary() == null) {
+      return ResponseEntity.badRequest().body("Username, password, and salary are required");
+    }
+    if(userRepository.findByUsername(user.getUsername()).isPresent()) {
+      return ResponseEntity.badRequest().body("Username already exists");
+    }
+    User savedUser = userRepository.save(user);
+    return ResponseEntity.ok(savedUser);
+  }
 }

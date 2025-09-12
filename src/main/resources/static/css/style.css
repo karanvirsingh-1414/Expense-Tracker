@@ -1,14 +1,14 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f6f8;
-  margin: 20px;
-  color: #333;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6fa;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
+  color: #2d3e50;
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 30px;
+  margin-top: 40px;
 }
 
 /* Expense list container */
@@ -78,10 +78,12 @@ form#expense-form button {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  
 }
 
 form#expense-form input {
   flex: 1 1 45%;
+  margin-left: -3%;
 }
 
 form#expense-form button {
@@ -91,6 +93,7 @@ form#expense-form button {
   border: none;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-left: 0%;
 }
 
 form#expense-form button:hover {
@@ -377,5 +380,216 @@ form#profile-form h1 {
     flex-basis: 100%;
   }
 }
+
+
+
+
+
+/* General dark background */
+body {
+  background: #1e1e2f;
+  color: #f5f6fa;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 40px;
+  color: #00b894;
+  letter-spacing: 2px;
+}
+
+/* Card-style container for form and summary */
+#expense-form, #summary-box, #main-view {
+  background: #26263a;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px 0 #18182888;
+  padding: 28px 30px 30px 30px;
+  max-width: 420px;
+  margin: 30px auto 20px auto;
+}
+
+/* Form inputs in focus with accent */
+#expense-form input, #expense-form button {
+  display: block;
+  width: 100%;
+  margin: 16px 0 0 0;
+  border: none;
+  outline: none;
+  padding: 13px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background: #23234a;
+  color: #dedede;
+  font-weight: 500;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+#expense-form input:focus {
+  box-shadow: 0 0 0 2px #00b894;
+  background: #303055;
+  color: #fff;
+}
+
+#expense-form button {
+  background: linear-gradient(90deg, #00b894 60%, #0984e3 100%);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+}
+
+#expense-form button:hover {
+  background: linear-gradient(90deg, #0984e3 0%, #00b894 100%);
+  box-shadow: 0 3px 20px #00b89470, 0 1.5px 12px #0984e370;
+}
+
+/* Summary box styling */
+#summary-box {
+  margin-bottom: 24px;
+  background: #212143;
+  border: 1.5px solid #00b89444;
+}
+
+#summary-box p {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #81ecec;
+}
+
+#salary-amount {
+  color: #fdcb6e;
+  font-weight: 600;
+}
+
+#total-expenses {
+  color: #d63031;
+  font-weight: 600;
+}
+
+#remaining-money {
+  color: #00b894;
+  font-weight: 600;
+}
+
+/* Main view styling (expenses list/cards) */
+#main-view {
+  background: transparent;
+  box-shadow: none;
+  padding: 0 30px 30px 30px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #23234a;
+}
+::-webkit-scrollbar-thumb {
+  background: #00b89477;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  #expense-form, #summary-box, #main-view {
+    max-width: 98vw;
+    padding: 16px 5vw 24px 5vw;
+  }
+}
+
+
+
+
+body {
+  background: #181829;
+  color: #efefef;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 48px;
+  letter-spacing: 2px;
+  color: #00b894;
+  font-size: 2rem;
+}
+
+/* Form Container Style */
+form {
+  background: #23234a !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #11112a66;
+  padding: 32px 32px 28px 32px;
+  width: 380px;
+  max-width: 96vw;
+  margin: 36px auto 18px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+
+form input {
+  background: #22224a;
+  border: none;
+  border-radius: 8px;
+  margin-left: -5%;
+  padding: 13px 16px;
+  margin-bottom: 10px;
+  color: #e9eaea;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+form input:focus {
+  background: #2d2d59;
+  color: #fff;
+  box-shadow: 0 0 0 2px #00b894;
+  outline: none;
+}
+
+form button {
+  background: linear-gradient(90deg, #00b894 70%, #0984e3 100%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #00b89422;
+}
+
+form button:hover {
+  background: linear-gradient(90deg, #0984e3 0%, #00b894 100%);
+  box-shadow: 0 4px 18px #0984e350;
+}
+
+#msg {
+  width: 360px;
+  max-width: 95vw;
+  margin: 0 auto 20px auto;
+  text-align: center;
+  color: #ef5350;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  form, #msg {
+    width: 98vw;
+    padding: 18px 2vw 20px 2vw;
+  }
+}
+
+
+
+
+
+
 
 
